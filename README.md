@@ -4,7 +4,7 @@
 
 **Sol Pump** ingests new mints from Telegram alert channels, builds a personal watchlist with live prices and since-add / from-peak / off-low analytics, renders OHLC charts, and supports **manual Jupiter swaps** (quote → simulate → type **SWAP** to confirm) plus an optional **Pump Catcher** that can auto-buy on signals in mock or live mode with post-catch dump and take-profit monitoring.
 
-Built for **authorized trading on chains you control** — pump.fun ecosystem tokens via Jupiter routing and DexScreener pools, not a cloud SaaS. Keys and wallet material stay in local config; this overview describes product behaviour only.
+Built for **authorized trading on chains you control** — pump.fun ecosystem tokens via Jupiter routing and DexScreener pools on a self-hosted desk. Keys and wallet material stay in local config.
 
 **Made by [Logic Encoder](https://logicencoder.com)**
 
@@ -12,7 +12,23 @@ Private source: [logicencoder/sol-pump-app](https://github.com/logicencoder/sol-
 
 ---
 
-## What you can do
+## Tech stack
+
+| Layer | Technologies |
+|-------|----------------|
+| Backend | Python 3.10+, FastAPI, Uvicorn, Pydantic, orjson |
+| Frontend | Vanilla HTML/CSS/JS, Clay UI, Lightweight Charts |
+| Engine | Node.js child process — Jupiter quotes and swap execution |
+| Chain | Solana mainnet via Helius or configured RPC |
+| Market data | DexScreener API, Jupiter Quote/Swap API |
+| Signals | Telegram public poller and optional Chrome realtime monitor |
+| Real-time | WebSocket — status, signals, swaps, watchlist updates |
+| Persistence | JSON under `data/` — watchlist, trade logs, settings |
+| Quality | Playwright E2E, empirical test suite, CI smoke |
+
+---
+
+## Desk surfaces
 
 | Area | In plain language |
 |------|-------------------|
@@ -28,7 +44,7 @@ Private source: [logicencoder/sol-pump-app](https://github.com/logicencoder/sol-
 
 ---
 
-## Feature examples (two per capability)
+## Operator workflows
 
 #### Telegram mint discovery
 1. You start **Telegram catcher** in the sidebar — public channel poller parses Solana addresses from pump alerts every few seconds.
@@ -112,32 +128,8 @@ Private source: [logicencoder/sol-pump-app](https://github.com/logicencoder/sol-
 
 ---
 
-## What it does not do
+**Scope:** a local FastAPI desk on your machine — wallet, watchlist, and trade logs stay local. Routing goes through Jupiter aggregation and DexScreener pool picks. The desk is a desktop browser UI for research and execution you authorize.
 
-- **Not** a cloud multi-tenant service — local FastAPI desk with your wallet and keys
-- **Not** direct pump.fun bonding-curve SDK — routing is Jupiter + DexScreener pools
-- **Not** guaranteed profit on meme tokens — tooling for research and execution you authorize
-- **Not** a mobile app — browser UI optimized for desktop trading sessions
-
-Wallet, watchlist, and trade logs stay on your machine — not published in this overview repo.
-
----
-
-## Tech stack
-
-| Layer | Technologies |
-|-------|----------------|
-| Backend | Python 3.10+, FastAPI, Uvicorn, Pydantic, orjson |
-| Frontend | Vanilla HTML/CSS/JS, Clay UI, Lightweight Charts |
-| Engine | Node.js child process — Jupiter quotes and swap execution |
-| Chain | Solana mainnet via Helius or configured RPC |
-| Market data | DexScreener API, Jupiter Quote/Swap API |
-| Signals | Telegram public poller and optional Chrome realtime monitor |
-| Real-time | WebSocket — status, signals, swaps, watchlist updates |
-| Persistence | JSON under `data/` — watchlist, trade logs, settings |
-| Quality | Playwright E2E, empirical test suite, CI smoke |
-
----
 
 ## Quick start
 
